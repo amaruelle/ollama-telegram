@@ -58,8 +58,7 @@ async def generate(payload: dict, modelname: str, prompt: str):
 def perms_allowed(func):
     @wraps(func)
     async def wrapper(message: types.Message = None, query: types.CallbackQuery = None):
-        user_id = message.from_user.id if message else query.from_user.id
-        if user_id in admin_ids or user_id in allowed_ids:
+        if allow_all_users_in_groups:
             if message:
                 return await func(message)
             elif query:
@@ -82,8 +81,7 @@ def perms_allowed(func):
 def perms_admins(func):
     @wraps(func)
     async def wrapper(message: types.Message = None, query: types.CallbackQuery = None):
-        user_id = message.from_user.id if message else query.from_user.id
-        if user_id in admin_ids:
+        if allow_all_users_in_groups:
             if message:
                 return await func(message)
             elif query:
