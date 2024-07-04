@@ -157,10 +157,11 @@ async def handle_message(message: types.Message):
     await get_bot_info()
     if message.chat.type == "private":
         await ollama_request(message)
-    if message.reply_to_message:
-        if message.text is not None:
+    if message.reply_to_message is not None:
+       if message.reply_to_message.from_user.id == bot.id:
+         if message.text is not None:
             prompt = message.text
-        await ollama_request(message, prompt)
+       	 await ollama_request(message, prompt)
     if is_mentioned_in_group_or_supergroup(message):
         if message.text is not None:
             text_without_mention = message.text.replace(mention, "").strip()
